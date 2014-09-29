@@ -53,7 +53,7 @@ var (
 	{{$CustomerName:=GetRequestResponseStructName .Name "Response"}}
 	{{$Name:=.Name}}
 	type {{GetRequestResponseStructName .Name "Response"}} struct { 
-		api.TaobaoResponse 'json:"error_response"'
+		*api.ErrorResponse 'json:"error_response,omitempty"'
 		Response struct{
 			{{range .Params}}/* {{.Desc}} */
 			{{GetHump .Name}} {{parseType .Type .Level}} 'json:"{{.Name}}"'

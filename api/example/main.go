@@ -27,7 +27,10 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	log.Println("error:", resp.Response.Item.InputPids)
+	if resp.ErrorResponse != nil {
+		log.Fatalln(resp.Msg)
+	}
+	log.Println("error:", resp.Response.Item.Desc)
 }
 
 func t3() {

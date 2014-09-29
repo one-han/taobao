@@ -35,9 +35,7 @@ func isFloat64(_type string) bool {
 }
 func jsonName(langType string) string {
 	prefix := "[]*"
-	log.Println("langType：", langType)
 	if strings.HasPrefix(langType, prefix) {
-		log.Println("哈哈哈哈h")
 		jsonName := strings.TrimPrefix(langType, prefix)
 		runes := []rune{}
 		for i, r := range jsonName {
