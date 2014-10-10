@@ -50,7 +50,10 @@ func (c *DefaultTaobaoClient) Excute(request TaobaoRequest, response interface{}
 	if err != nil {
 		return nil, err
 	}
-	return data, json.Unmarshal(data, &response)
+	if response != nil {
+		return data, json.Unmarshal(data, &response)
+	}
+	return data, nil
 }
 func md5Signature(secret string, request TaobaoRequest) string {
 	keys := make([]string, 0)
