@@ -30,7 +30,7 @@ func main() {
 	if resp.ErrorResponse != nil {
 		log.Fatalln(resp.Msg)
 	}
-	log.Println("error:", resp.Response.Item.Desc)
+	log.Println("error:", resp.Item.Desc)
 }
 
 func t3() {

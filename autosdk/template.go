@@ -54,10 +54,12 @@ var (
 	{{$Name:=.Name}}
 	type {{GetRequestResponseStructName .Name "Response"}} struct { 
 		*api.ErrorResponse 'json:"error_response,omitempty"'
-		Response struct{
-			{{range .Params}}/* {{.Desc}} */
-			{{GetHump .Name}} {{parseType .Type .Level}} 'json:"{{.Name}}"'
-			{{end}} }'json:"{{GetRequestResponseStructJsonName $Name}}"'
-		}
+		{{GetRequestResponseStructName .Name "Response"}}Result 'json:"{{GetRequestResponseStructJsonName $Name}}"'
+	}
+	type {{GetRequestResponseStructName .Name "Response"}}Result struct{
+		{{range .Params}}/* {{.Desc}} */
+		{{GetHump .Name}} {{parseType .Type .Level}} 'json:"{{.Name}}"'
+		{{end}} 
+	}
 	`
 )
