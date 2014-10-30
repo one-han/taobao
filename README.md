@@ -1,7 +1,9 @@
 # taobao
 [淘宝开放平台](http://open.taobao.com/api/api_list.htm)的go版的SDK. 内置sdk生成工具.
+
 ## autosdk
 可由淘宝提供的ApiMetadata.xml,自动生成sdk.
+
 ### 使用示例
 比如`得到单个商品信息`,[参见文档](http://open.taobao.com/api/api_cat_detail.htm?spm=a219a.7386789.0.0.8MDkjq&cat_id=4&category_id=102),其调用方法`taobao.item.get`.代码如下：
 ~~~
@@ -30,6 +32,7 @@ if err = autosdk.Install(path.Join(root, "domain"), path.Join(root, "request"), 
 	panic(err)
 }
 ~~~
+
 ###api###
 * appKey,appSecret可以创建应用获取, [参考文档](http://open.taobao.com/doc/detail.htm?id=101618).
 * sessionKey可以由工具生成,[工具地址](http://api.taobao.com/apitools/sessionPage.htm?spm=a219a.7395905.0.10).
@@ -58,11 +61,14 @@ if resp.ErrorResponse != nil {
 }
 log.Println("item:", resp.Item)
 ~~~
+
 ## 计划
 * 目前是基于api调用方法的单个生成, 对于整个ApiMetadata.xml, 由于go install对文件数量的限制, 一键生成需要将文件合并.未完成
 * https免签调用.未完成
 * web支持.未完成
+
 ## 说明
 本人未接受过专业训练, 纯菜鸟一枚.诚意接受各位的指正批评,不接受人身攻击.乐意各位的指点,可请之喝酒玩乐!
+
 ## 关于
 思路源自[changkong](https://github.com/changkong/open_taobao),特别鸣谢.
