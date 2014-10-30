@@ -2,6 +2,7 @@ package api
 
 import (
 	"crypto/md5"
+	"crypto/tls"
 	"encoding/hex"
 	"encoding/json"
 	"io/ioutil"
@@ -11,26 +12,47 @@ import (
 	"time"
 )
 
+const (
+	APP_KEY     = "app_key"
+	FORMAT      = "format"
+	METHOD      = "method"
+	TIMESTAMP   = "timestamp"
+	VERSION     = "v"
+	SIGN        = "sign"
+	SIGN_METHOD = "sign_method"
+	PARTNER_ID  = "partner_id"
+	SESSION     = "session"
+	SIMPLIFY    = "simplify"
+)
+
 type TaobaoClient interface {
 	Excute(request TaobaoRequest, response interface{}, sessionKey string) ([]byte, error)
 }
 
-type DefaultTaobaoClient struct {
+type DefaultClient struct {
 	ServerUrl string
-	AppKey    string
-	AppSecret string
+	Format    string
+	Version   string
+}
+type DefaultTaobaoClient struct {
+	DefaultClient
+	SignMethod string
+	AppKey     string
+	AppSecret  string
+}
+type HttpsTaobaoClient struct { //https://eco.taobao.com/router/rest
+	DefaultClient
 }
 
 func (c *DefaultTaobaoClient) Excute(request TaobaoRequest, response interface{}, sessionKey string) ([]byte, error) {
-	request.SetValue("app_key", c.AppKey)
-	request.SetValue("format", "json")
-	request.SetValue("method", request.GetApiMethodName())
-	// request.SetValue("sign_method", "md5")
-	request.SetValue("v", "2.0")
-	request.SetValue("session", sessionKey)
-	request.SetValue("timestamp", time.Now().Format("2006-01-02 15:04:05"))
-	request.SetValue("sign", md5Signature(c.AppSecret, request))
-
+	request.SetValue(APP_KEY, c.AppKey)
+	request.SetValue(METHOD, request.GetApiMethodName())
+	request.SetValue(FORMAT, c.Format)
+	request.SetValue(VERSION, c.Version)
+	// request.SetValue(SIGN_METHOD, c.SignMethod)
+	request.SetValue(SESSION, sessionKey)
+	request.SetValue(TIMESTAMP, time.Now().Format("2006-01-02 15:04:05"))
+	request.SetValue(SIGN, md5Signature(c.AppSecret, request))
 	body := strings.NewReader(request.GetValues().Encode())
 	req, err := http.NewRequest("POST", c.ServerUrl, body)
 	if err != nil {
@@ -40,6 +62,32 @@ func (c *DefaultTaobaoClient) Excute(request TaobaoRequest, response interface{}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded") //必须
 
 	client := &http.Client{}
+	return clientDo(client, req, response)
+}
+
+func (c *HttpsTaobaoClient) Excute(request TaobaoRequest, response interface{}, accessToken string) ([]byte, error) {
+	request.SetValue(METHOD, request.GetApiMethodName())
+	request.SetValue(FORMAT, c.Format)
+	request.SetValue(VERSION, c.Version)
+	request.SetValue("access_token", accessToken)
+
+	body := strings.NewReader(request.GetValues().Encode())
+	req, err := http.NewRequest("POST", c.ServerUrl, body)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded") //必须
+
+	transport := new(http.Transport)
+	transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: false}
+
+	client := new(http.Client)
+	client.Transport = transport
+
+	return clientDo(client, req, response)
+}
+
+func clientDo(client *http.Client, req *http.Request, response interface{}) ([]byte, error) {
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -71,4 +119,32 @@ func md5Signature(secret string, request TaobaoRequest) string {
 	h := md5.New()
 	h.Write([]byte(str))
 	return strings.ToUpper(hex.EncodeToString(h.Sum(nil)))
+}
+
+func GetDefaultTaobaoClient(appkey, appSecret, serverUrl string) *DefaultTaobaoClient {
+	if serverUrl == "" {
+		serverUrl = "http://gw.api.taobao.com/router/rest"
+	}
+	return &DefaultTaobaoClient{
+		DefaultClient: DefaultClient{
+			serverUrl,
+			"json",
+			"2.0",
+		},
+		// SignMethod: "md5",
+		AppKey:    appkey,
+		AppSecret: appSecret,
+	}
+}
+func GetHttpsTaobaoClient(serverUrl string) *HttpsTaobaoClient {
+	if serverUrl == "" {
+		serverUrl = "https://eco.taobao.com/router/rest"
+	}
+	return &HttpsTaobaoClient{
+		DefaultClient: DefaultClient{
+			serverUrl,
+			"json",
+			"2.0",
+		},
+	}
 }

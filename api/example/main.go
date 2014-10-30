@@ -1,52 +1,38 @@
 package main
 
 import (
-	"encoding/json"
 	"github.com/ohohco/taobao/api"
 	"github.com/ohohco/taobao/api/request"
 	"github.com/ohohco/taobao/api/response"
 	"log"
 )
 
-func init() {
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
-}
-func main() {
+var (
+	serverUrl   = "" //为空则默认使用正式环境
+	appKey      = "xxx"
+	appSecret   = "xxx"
+	sessionKey  = "xxx"
+	accessToken = "xxx"
+)
 
-	client := api.DefaultTaobaoClient{
-		"http://gw.api.taobao.com/router/rest",
-		"your appKey",
-		"your appSecret",
-	}
+func main() {
+	client := api.GetDefaultTaobaoClient(appKey, appSecret, serverUrl)
+	//免签名方式(https)
+	// client := api.GetHttpsTaobaoClient(serverUrl)
+
 	var resp response.ItemGetResponse
 	var req = new(request.ItemGetRequest)
-	req.SetFields("detail_url,num_iid,title,nick,type,cid,seller_cids,props,input_pids,input_str,desc,pic_url,num,valid_thru,list_time,delist_time,stuff_status,location,price,post_fee,express_fee,ems_fee,has_discount,freight_payer,has_invoice,has_warranty,has_showcase,modified,increment,approve_status,postage_id,product_id,auction_point,property_alias,item_img,prop_img,sku,video,outer_id,is_virtual")
-	req.SetNumIid("41195705534")
-	data, err := client.Excute(req, &resp, "your sessionKey")
+	req.SetFields("desc")
+	req.SetNumIid("21301327956")
+
+	//免签名方式(https)时使用accessToken
+	data, err := client.Excute(req, &resp, sessionKey) //"sessionKey or accessToken"
+	log.Println("data:", string(data))                 //data为淘宝平台返回的字符串
 	if err != nil {
 		panic(err)
 	}
-	log.Println("data:", string(data)) //data为淘宝平台返回的字符串
 	if resp.ErrorResponse != nil {
 		panic(resp.Msg)
 	}
 	log.Println("desc:", resp.Item.Desc)
-}
-
-func t3() {
-	data := `{"item_get_response":{"item":{"nick":"歌莉娅官方旗舰店","num_iid":41195705534,"title":"[纪念款]歌莉娅2014冬季连衣裙印花欧根纱长袖连衣裙14DE4E790"}}}`
-	var resp response.ItemGetResponse
-	// resp.Body = "歌莉娅官方旗舰店"
-	// resp.SubCode = "41195705534"
-	// resp.Response.Item.Nick = "歌莉娅官方旗舰店"
-	// if _bytes, err := json.Marshal(&resp); err != nil {
-	// 	log.Fatalln(err)
-	// } else {
-	// 	log.Println(string(_bytes))
-	// }
-	// return
-	if err := json.Unmarshal([]byte(data), &resp); err != nil {
-		log.Fatalln(err)
-	}
-	log.Println(resp.Response.Item.Nick)
 }

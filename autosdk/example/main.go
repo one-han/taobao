@@ -8,34 +8,37 @@ import (
 )
 
 var (
-	root     = "github.com/ohohco/taobao/api"
+	//生成文件所在路径.
+	root = "github.com/ohohco/taobao/api"
+	//ApiMetadata.xml文件
 	filename = "./ApiMetadata.xml"
+	//api文档的调用方法
+	apiMethod = "taobao.item.get"
+	//生成文件所在路径(绝对路径).
+	dest = path.Join(os.Getenv("GOPATH"), "src/github.com/ohohco/taobao/api")
 )
 
 func main() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
 
+	//文件读取
 	var metadata *autosdk.Metadata
 	metadata, err := metadata.UnmarshalFile(filename)
 	if err != nil {
-		log.Fatalln("error: %s", err)
+		panic(err)
 	}
-
-	//1. 根据api方法名生成sdk
-	//参考地址：http://open.taobao.com/api/api_cat_detail.htm?spm=a219a.7386789.0.0.IG5dsm&cat_id=4&category_id=102
-	rootPath := path.Join(os.Getenv("GOPATH"), "src/"+root)
-	log.Println("rootPath:", rootPath)
-	if err = metadata.GeneratorByApiMethod("taobao.item.get", rootPath); err != nil {
-		log.Fatalf("error: %s", err)
+	//文件生成
+	if err = metadata.GeneratorByApiMethod(apiMethod, dest); err != nil {
+		panic(err)
 	}
-
-	//2. 格式化go文件
-	if err = autosdk.Format(rootPath); err != nil {
-		log.Fatalf("error: %s", err)
+	//代码格式化：
+	if err = autosdk.Format(dest); err != nil {
+		panic(err)
 	}
-
-	//3. install go文件
-	if err = autosdk.Install(path.Join(root, "domain"), path.Join(root, "request"), path.Join(root, "response")); err != nil {
-		log.Fatalf("error: %s", err)
+	//代码install:
+	if err = autosdk.Install(path.Join(root, "domain"),
+		path.Join(root, "request"),
+		path.Join(root, "response")); err != nil {
+		panic(err)
 	}
 }
