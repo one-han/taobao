@@ -22,15 +22,15 @@ func main() {
 	var req = new(request.ItemGetRequest)
 	req.SetFields("detail_url,num_iid,title,nick,type,cid,seller_cids,props,input_pids,input_str,desc,pic_url,num,valid_thru,list_time,delist_time,stuff_status,location,price,post_fee,express_fee,ems_fee,has_discount,freight_payer,has_invoice,has_warranty,has_showcase,modified,increment,approve_status,postage_id,product_id,auction_point,property_alias,item_img,prop_img,sku,video,outer_id,is_virtual")
 	req.SetNumIid("41195705534")
-	_, err := client.Excute(req, &resp, "your sessionKey")
-	// log.Println("data:", string(_bytes))
+	data, err := client.Excute(req, &resp, "your sessionKey")
 	if err != nil {
-		log.Fatalln(err)
+		panic(err)
 	}
+	log.Println("data:", string(data)) //data为淘宝平台返回的字符串
 	if resp.ErrorResponse != nil {
-		log.Fatalln(resp.Msg)
+		panic(resp.Msg)
 	}
-	log.Println("error:", resp.Item.Desc)
+	log.Println("desc:", resp.Item.Desc)
 }
 
 func t3() {
