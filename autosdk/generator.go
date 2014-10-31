@@ -25,7 +25,7 @@ func findRelatedStructs(s *Struct, structs map[string]*Struct, list []*Struct) [
 * methodname api的请求名
 * 生成文件指定的根路径
  */
-func (m *Metadata) GeneratorByApiMethod(methodName, root string) (err error) {
+func (m *Metadata) GenerateByApiMethod(methodName, root string) (err error) {
 	if m == nil {
 		return errors.New("the Metadata is nil")
 	}
@@ -39,7 +39,7 @@ func (m *Metadata) GeneratorByApiMethod(methodName, root string) (err error) {
 
 	api.Request.Name = api.Name
 	api.Response.Name = api.Name
-	if err = api.Generator(root); err != nil {
+	if err = api.Generate(root); err != nil {
 		return
 	}
 	for _, param := range api.Response.Params {
@@ -52,7 +52,7 @@ func (m *Metadata) GeneratorByApiMethod(methodName, root string) (err error) {
 	}
 
 	for _, s := range list {
-		if err = s.Generator(root); err != nil {
+		if err = s.Generate(root); err != nil {
 			break
 		}
 	}
@@ -79,7 +79,7 @@ func makeDir(root string) error {
 * 将整个metadata.xml生成对应的api文件
 *
  */
-func (m *Metadata) Generator(root string) (err error) {
+func (m *Metadata) Generate(root string) (err error) {
 	if m == nil {
 		return errors.New("the Metadata is nil")
 	}
@@ -88,38 +88,50 @@ func (m *Metadata) Generator(root string) (err error) {
 	}
 
 	for _, s := range m.Structs {
-		if err = s.Generator(root); err != nil {
+		if err = s.Generate(root); err != nil {
 			break
 		}
 	}
 	for _, api := range m.Apis {
-		if err = api.Generator(root); err != nil {
+		if err = api.Generate(root); err != nil {
 			break
 		}
 	}
 	return
 }
-func (s *Struct) Generator(root string) error {
+func (m *Metadata) GenerateAllInOne(root string) (err error) {
+	if m == nil {
+		return errors.New("the Metadata is nil")
+	}
+	if err := os.MkdirAll(root, 0777); err != nil {
+		return err
+	}
+
+	//structs
+	filename := filepath.Join(root, "api.go")
+	return generate(filename, AllInOneTmpl, m)
+}
+func (s *Struct) Generate(root string) error {
 	filename := filepath.Join(root, "domain", s.Name+".go")
-	if err := generator(filename, StructTmpl, s); err != nil {
+	if err := generate(filename, StructTmpl, s); err != nil {
 		return err
 	}
 	return nil
 }
-func (api *Api) Generator(root string) error {
+func (api *Api) Generate(root string) error {
 	filename := filepath.Join(root, "request", GetRequestResponseStructName(api.Name, "Request")+".go")
-	if err := generator(filename, RequestTmpl, api.Request); err != nil {
+	if err := generate(filename, RequestTmpl, api.Request); err != nil {
 		return err
 	}
 
 	filename = filepath.Join(root, "response", GetRequestResponseStructName(api.Name, "Response")+".go")
-	if err := generator(filename, ResponseTmpl, api.Response); err != nil {
+	if err := generate(filename, ResponseTmpl, api.Response); err != nil {
 		return err
 	}
 	return nil
 }
 
-func generator(filename, tmpl string, inter interface{}) error {
+func generate(filename, tmpl string, inter interface{}) error {
 	funcs := make(map[string]interface{})
 	funcs["GetHump"] = GetHump
 	funcs["GetRequestResponseStructName"] = GetRequestResponseStructName

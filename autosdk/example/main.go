@@ -28,7 +28,10 @@ func main() {
 		panic(err)
 	}
 	//文件生成
-	if err = metadata.GeneratorByApiMethod(apiMethod, dest); err != nil {
+	// if err = metadata.GeneratorByApiMethod(apiMethod, dest); err != nil {
+	// 	panic(err)
+	// }
+	if err = metadata.GenerateAllInOne(dest); err != nil {
 		panic(err)
 	}
 	//代码格式化：
@@ -36,9 +39,12 @@ func main() {
 		panic(err)
 	}
 	//代码install:
-	if err = autosdk.Install(path.Join(root, "domain"),
-		path.Join(root, "request"),
-		path.Join(root, "response")); err != nil {
+	if err = autosdk.Install(
+		root,
+	// 	// path.Join(root, "domain"),
+	// 	// path.Join(root, "request"),
+	// 	// path.Join(root, "response"),
+	); err != nil {
 		panic(err)
 	}
 }
