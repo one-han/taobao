@@ -82,6 +82,7 @@ if err = metadata.Generate(dest); err != nil {
 ```
 > 注意：
 	* 示例中`metadata.Generate(dest)`可一键生成所有. 由于是分文件存储, 其数量过多会致使`go install`等命令不通过.
+
 ### 一键生成所有
 该方式会将所有结构和方法生成在一个文件, API调用更简单, 当然缺点是文件更大, 查找不方便.
 结构为filepackage
