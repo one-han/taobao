@@ -146,7 +146,7 @@ func main() {
 如果是使用上述`方式3`生成的SDK, API调用时仅引入`github.com/ohohco/taobao/api`即可.
 
 ## 计划
-* 目前是基于api调用方法的单个生成, 对于整个ApiMetadata.xml, 由于go install对文件数量的限制, 一键生成需要将文件合并.
+* 目前是基于api调用方法的单个生成, 对于整个ApiMetadata.xml, 由于go install对文件数量的限制, 一键生成需要将文件合并.已完成
 * https免签调用.已完成
 * web授权支持.
 * 完善多种加密方式md5/hmac.
