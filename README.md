@@ -6,9 +6,10 @@
 主要有两种生成方式:
 * 分结构生成
 * 一键生成所有
+
 ### 分结构生成
 此方式结构清晰, 适用于按需生成, 且与淘宝官方提供的JAVA版本SDK结构一致. 
-生成结构如下：
+生成结构如下:
 > filepackage/domain  
   filepackage/request  
   filepackage/response  
