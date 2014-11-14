@@ -56,9 +56,6 @@ func main() {
 	///////////////
 	////其他方式///
 	///////////////
-	if err = metadata.Generate(dest); err != nil {
-		panic(err)
-	}
 
 	//代码格式化：
 	if err = autosdk.Format(dest); err != nil {
@@ -146,14 +143,15 @@ func main() {
 如果是使用上述`方式3`生成的SDK, API调用时仅引入`github.com/ohohco/taobao/api`即可.
 
 ## 计划
-* 目前是基于api调用方法的单个生成, 对于整个ApiMetadata.xml, 由于go install对文件数量的限制, 一键生成需要将文件合并.已完成
-* https免签调用.已完成
+* 目前是基于api调用方法的单个生成, 对于整个ApiMetadata.xml, 由于go install对文件数量的限制, 一键生成需要将文件合并. 已完成
+* https免签调用. 已完成
 * web授权支持.
 * 完善多种加密方式md5/hmac.
 
 ## 说明
-思路源自[changkong](https://github.com/changkong/open_taobao),特别鸣谢.
-添加了对appKey,appSecret传人的支持。适用于多个店铺共用同样的appKey,appSecret不同的sessionKey.
+思路源自[changkong](https://github.com/changkong/open_taobao), 特此鸣谢.  
+较之添加了对appKey,appSecret传入的支持. 
+适用于多个店铺共用同样的appKey,appSecret不同的sessionKey.  
 
 ## 关于
-本人未接受过专业训练, 纯菜鸟一枚.诚意接受各位的指正批评,不接受人身攻击.乐意各位的指点,可请之喝酒玩乐!
+本人未接受过专业训练, 业余爱好, 纯菜鸟一枚. 诚意接受各位的指正批评, 不接受人身攻击. 乐意各位的指点, 可请之喝酒玩乐!

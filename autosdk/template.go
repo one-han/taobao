@@ -20,23 +20,23 @@ var (
 			values url.Values
 		}
 		
-		func (r *{{$CustomerName}})GetApiMethodName() string{
+		func (this *{{$CustomerName}})GetApiMethodName() string{
 			return "{{.Name}}"
 		}
-		func (r *{{$CustomerName}})Set(key,value string){
-			if r.values == nil {
-				r.values = url.Values{}
+		func (this *{{$CustomerName}})Set(key,value string){
+			if this.values == nil {
+				this.values = url.Values{}
 			}
-			r.values.Set(key, value)
+			this.values.Set(key, value)
 		}
-		func (r *{{$CustomerName}})GetValues() url.Values{
-			return r.values
+		func (this *{{$CustomerName}})GetValues() url.Values{
+			return this.values
 		}
 
 		{{range .Params}}
 		/* {{.Desc}} */
-		func (r *{{$CustomerName}}) Set{{GetHump .Name}}(value string) {
-			r.Set("{{.Name}}", value)
+		func (this *{{$CustomerName}}) Set{{GetHump .Name}}(value string) {
+			this.Set("{{.Name}}", value)
 		}
 		{{end}}
 	`
@@ -79,23 +79,23 @@ var (
 				values url.Values
 			}
 			
-			func (r *{{$CustomerName}})GetApiMethodName() string{
+			func (this *{{$CustomerName}})GetApiMethodName() string{
 				return "{{.Name}}"
 			}
-			func (r *{{$CustomerName}})Set(key,value string){
-				if r.values == nil {
-					r.values = url.Values{}
+			func (this *{{$CustomerName}})Set(key,value string){
+				if this.values == nil {
+					this.values = url.Values{}
 				}
-				r.values.Set(key, value)
+				this.values.Set(key, value)
 			}
-			func (r *{{$CustomerName}})GetValues() url.Values{
-				return r.values
+			func (this *{{$CustomerName}})GetValues() url.Values{
+				return this.values
 			}
 
 			{{range .Request.Params}}
 			/* {{.Desc}} */
-			func (r *{{$CustomerName}}) Set{{GetHump .Name}}(value string) {
-				r.Set("{{.Name}}", value)
+			func (this *{{$CustomerName}}) Set{{GetHump .Name}}(value string) {
+				this.Set("{{.Name}}", value)
 			}
 			{{end}}
 
