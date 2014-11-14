@@ -45,14 +45,14 @@ type HttpsTaobaoClient struct { //https://eco.taobao.com/router/rest
 }
 
 func (c *DefaultTaobaoClient) Excute(request TaobaoRequest, response interface{}, sessionKey string) ([]byte, error) {
-	request.SetValue(APP_KEY, c.AppKey)
-	request.SetValue(METHOD, request.GetApiMethodName())
-	request.SetValue(FORMAT, c.Format)
-	request.SetValue(VERSION, c.Version)
+	request.Set(APP_KEY, c.AppKey)
+	request.Set(METHOD, request.GetApiMethodName())
+	request.Set(FORMAT, c.Format)
+	request.Set(VERSION, c.Version)
 	// request.SetValue(SIGN_METHOD, c.SignMethod)
-	request.SetValue(SESSION, sessionKey)
-	request.SetValue(TIMESTAMP, time.Now().Format("2006-01-02 15:04:05"))
-	request.SetValue(SIGN, md5Signature(c.AppSecret, request))
+	request.Set(SESSION, sessionKey)
+	request.Set(TIMESTAMP, time.Now().Format("2006-01-02 15:04:05"))
+	request.Set(SIGN, md5Signature(c.AppSecret, request))
 	body := strings.NewReader(request.GetValues().Encode())
 	req, err := http.NewRequest("POST", c.ServerUrl, body)
 	if err != nil {
@@ -66,10 +66,10 @@ func (c *DefaultTaobaoClient) Excute(request TaobaoRequest, response interface{}
 }
 
 func (c *HttpsTaobaoClient) Excute(request TaobaoRequest, response interface{}, accessToken string) ([]byte, error) {
-	request.SetValue(METHOD, request.GetApiMethodName())
-	request.SetValue(FORMAT, c.Format)
-	request.SetValue(VERSION, c.Version)
-	request.SetValue("access_token", accessToken)
+	request.Set(METHOD, request.GetApiMethodName())
+	request.Set(FORMAT, c.Format)
+	request.Set(VERSION, c.Version)
+	request.Set("access_token", accessToken)
 
 	body := strings.NewReader(request.GetValues().Encode())
 	req, err := http.NewRequest("POST", c.ServerUrl, body)
