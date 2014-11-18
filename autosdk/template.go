@@ -7,7 +7,7 @@ var (
 		/* {{.Desc}} */
 		type {{.Name}} struct { {{range .Props}} 
 			/* {{.Desc}} */
-			{{GetHump .Name}} {{$parseType:=parseType .Type .Level}}{{$parseType}} 'json:"{{.Name}}{{jsonName $parseType}}{{if isFloat64 .Type}},string{{end}}"' 
+			{{GetHump .Name}} {{$parseType:=parseType .Type .Level}}{{$parseType}} 'json:"{{.Name}}{{xmlName $parseType}}{{if isFloat64 .Type}},string{{end}}"' 
 		{{end}} }
 	`
 	RequestTmpl = `
@@ -68,7 +68,7 @@ var (
 			/* {{.Desc}} */
 			type {{.Name}} struct { {{range .Props}} 
 				/* {{.Desc}} */
-				{{GetHump .Name}} {{$parseType:=parseType .Type .Level}}{{$parseType}} 'json:"{{.Name}}{{jsonName $parseType}}{{if isFloat64 .Type}},string{{end}}"' 
+				{{GetHump .Name}} {{$parseType:=parseType .Type .Level}}{{$parseType}} 'json:"{{.Name}}{{xmlName $parseType}}{{if isFloat64 .Type}},string{{end}}"' 
 			{{end}} }
 		{{end}}
 		
@@ -106,7 +106,7 @@ var (
 			}
 			type {{$ResponseCustomerName}}Result struct{
 				{{range .Response.Params}}/* {{.Desc}} */
-				{{GetHump .Name}} {{parseType .Type .Level}} 'json:"{{.Name}}"'
+				{{ResponeField .Name .Type .Level}}
 				{{end}} 
 			}
 		{{end}}

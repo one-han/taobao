@@ -139,7 +139,8 @@ func generate(filename, tmpl string, inter interface{}) error {
 	funcs["parseType"] = parseType
 	funcs["hasObject"] = hasObject
 	funcs["isFloat64"] = isFloat64
-	funcs["jsonName"] = jsonName
+	funcs["xmlName"] = xmlName
+	funcs["ResponeField"] = ResponeField
 
 	t, err := template.New("t").Funcs(funcs).Parse(strings.Replace(tmpl, "'", "`", -1))
 	if err != nil {
