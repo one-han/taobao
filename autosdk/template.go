@@ -41,7 +41,7 @@ var (
 		{{end}}
 	`
 	ResponseTmpl = `
-		{{$package:="github.com/ohohco/taobao/api"}}
+		{{$package:="github.com/one-han/taobao/api"}}
 		package response
 		import (
 			"{{$package}}"

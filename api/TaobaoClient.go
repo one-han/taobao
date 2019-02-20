@@ -49,8 +49,8 @@ func (c *DefaultTaobaoClient) Excute(request TaobaoRequest, response interface{}
 	request.Set(METHOD, request.GetApiMethodName())
 	request.Set(FORMAT, c.Format)
 	request.Set(VERSION, c.Version)
-	// request.SetValue(SIGN_METHOD, c.SignMethod)
-	request.Set(SESSION, sessionKey)
+	//request.Set(SESSION, sessionKey)
+	request.Set(SIGN_METHOD, c.SignMethod)
 	request.Set(TIMESTAMP, time.Now().Format("2006-01-02 15:04:05"))
 	request.Set(SIGN, md5Signature(c.AppSecret, request))
 	body := strings.NewReader(request.GetValues().Encode())
@@ -61,7 +61,12 @@ func (c *DefaultTaobaoClient) Excute(request TaobaoRequest, response interface{}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded") //必须
 
-	client := &http.Client{}
+	tr := &http.Transport{
+		TLSClientConfig:    &tls.Config{InsecureSkipVerify: true},
+		DisableCompression: false,
+		DisableKeepAlives:  false,
+	}
+	client := &http.Client{Transport: tr}
 	return clientDo(client, req, response)
 }
 
@@ -103,6 +108,7 @@ func clientDo(client *http.Client, req *http.Request, response interface{}) ([]b
 	}
 	return data, nil
 }
+
 func md5Signature(secret string, request TaobaoRequest) string {
 	keys := make([]string, 0)
 	for k := range request.GetValues() {
@@ -116,6 +122,7 @@ func md5Signature(secret string, request TaobaoRequest) string {
 			str += k + v
 		}
 	}
+	str += secret
 	h := md5.New()
 	h.Write([]byte(str))
 	return strings.ToUpper(hex.EncodeToString(h.Sum(nil)))
@@ -131,9 +138,9 @@ func GetDefaultTaobaoClient(appkey, appSecret, serverUrl string) *DefaultTaobaoC
 			"json",
 			"2.0",
 		},
-		// SignMethod: "md5",
-		AppKey:    appkey,
-		AppSecret: appSecret,
+		SignMethod: "md5",
+		AppKey:     appkey,
+		AppSecret:  appSecret,
 	}
 }
 func GetHttpsTaobaoClient(serverUrl string) *HttpsTaobaoClient {

@@ -20,7 +20,7 @@
 package main
 
 import (
-	"github.com/ohohco/taobao/autosdk"
+	"github.com/one-han/taobao/autosdk"
 	"log"
 	"os"
 	"path"
@@ -28,13 +28,13 @@ import (
 
 var (
 	//生成文件所在路径.
-	root = "github.com/ohohco/taobao/api"
+	root = "github.com/one-han/taobao/api"
 	//ApiMetadata.xml文件
 	filename = "./ApiMetadata.xml"
 	//api文档的调用方法
 	apiMethod = "taobao.item.get"
 	//生成文件所在路径(绝对路径).
-	dest = path.Join(os.Getenv("GOPATH"), "src/github.com/ohohco/taobao/api")
+	dest = path.Join(os.Getenv("GOPATH"), "src/github.com/one-han/taobao/api")
 )
 
 func main() {
@@ -104,9 +104,9 @@ if err = metadata.GenerateAllInOne(dest); err != nil {
 package main
 
 import (
-	"github.com/ohohco/taobao/api"
-	"github.com/ohohco/taobao/api/request"
-	"github.com/ohohco/taobao/api/response"
+	"github.com/one-han/taobao/api"
+	"github.com/one-han/taobao/api/request"
+	"github.com/one-han/taobao/api/response"
 	"log"
 )
 
@@ -140,7 +140,7 @@ func main() {
 	log.Println("desc:", resp.Item.Desc)
 }
 ~~~
-如果是使用上述`方式3`生成的SDK, API调用时仅引入`github.com/ohohco/taobao/api`即可.
+如果是使用上述`方式3`生成的SDK, API调用时仅引入`github.com/one-han/taobao/api`即可.
 
 ## 计划
 * 目前是基于api调用方法的单个生成, 对于整个ApiMetadata.xml, 由于go install对文件数量的限制, 一键生成需要将文件合并. 已完成

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ohohco/taobao/autosdk"
+	"github.com/one-han/taobao/autosdk"
 	"log"
 	"os"
 	"path"
@@ -9,13 +9,13 @@ import (
 
 var (
 	//生成文件所在路径.
-	root = "github.com/ohohco/taobao/api"
+	root = "github.com/one-han/taobao/api"
 	//ApiMetadata.xml文件
-	filename = "./ApiMetadata.xml"
+	filename = "/Users/han/go/src/github.com/one-han/taobao/autosdk/example/ApiMetadata.xml"
 	//api文档的调用方法
-	apiMethod = "taobao.item.get"
+	apiMethod = "taobao.tbk.dg.optimus.material"
 	//生成文件所在路径(绝对路径).
-	dest = path.Join(os.Getenv("GOPATH"), "src/github.com/ohohco/taobao/api")
+	dest = path.Join(os.Getenv("GOPATH"), "src/github.com/one-han/taobao/api")
 )
 
 func main() {
@@ -28,19 +28,19 @@ func main() {
 		panic(err)
 	}
 	//文件生成
-	// if err = metadata.GeneratorByApiMethod(apiMethod, dest); err != nil {
-	// 	panic(err)
-	// }
-	if err = metadata.GenerateAllInOne(dest); err != nil {
+	if err = metadata.GenerateByApiMethod(apiMethod, dest); err != nil {
 		panic(err)
 	}
+	//if err = metadata.(dest); err != nil {
+	//	panic(err)
+	//}
 	//代码格式化：
 	if err = autosdk.Format(dest); err != nil {
 		panic(err)
 	}
 	//代码install:
 	if err = autosdk.Install(
-		root,
+		dest,
 	// 	// path.Join(root, "domain"),
 	// 	// path.Join(root, "request"),
 	// 	// path.Join(root, "response"),

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/ohohco/taobao/api"
-	"github.com/ohohco/taobao/api/request"
-	"github.com/ohohco/taobao/api/response"
+	"github.com/one-han/taobao/api"
+	"github.com/one-han/taobao/api/request"
+	"github.com/one-han/taobao/api/response"
 	"log"
 )
 
