@@ -13,7 +13,7 @@ var (
 	//ApiMetadata.xml文件
 	filename = "/Users/han/go/src/github.com/one-han/taobao/autosdk/example/ApiMetadata.xml"
 	//api文档的调用方法
-	apiMethod = "taobao.tbk.dg.optimus.material"
+	apiMethod = "taobao.tbk.tpwd.create"
 	//生成文件所在路径(绝对路径).
 	dest = path.Join(os.Getenv("GOPATH"), "src/github.com/one-han/taobao/api")
 )
