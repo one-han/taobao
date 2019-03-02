@@ -1,48 +1,57 @@
 package domain
 
 /* resultList */
-type DgMapData struct {
+type DgSearchMapData struct {
 	/* 叶子类目id */
 	CategoryId int64 `json:"category_id"`
 
 	/* 叶子类目名称 */
 	CategoryName string `json:"category_name"`
 
-	/* 单品淘客链接 */
-	ClickUrl string `json:"click_url"`
-
-	/* 佣金比率(%) */
+	/* 佣金比率 */
 	CommissionRate string `json:"commission_rate"`
 
-	/* 券面额 */
-	CouponAmount int64 `json:"coupon_amount"`
-
-	/* 优惠券链接 */
-	CouponClickUrl string `json:"coupon_click_url"`
-
-	/* 优惠券链接 */
-	CouponShareUrl string `json:"coupon_share_url"`
+	/* 佣金类型 */
+	CommissionType string `json:"commission_type"`
 
 	/* 优惠券结束时间 */
 	CouponEndTime string `json:"coupon_end_time"`
 
+	/* 优惠券id */
+	CouponId string `json:"coupon_id"`
+
+	/* 优惠券面额 */
+	CouponInfo string `json:"coupon_info"`
+
 	/* 优惠券剩余量 */
 	CouponRemainCount int64 `json:"coupon_remain_count"`
 
-	/* 优惠券起用门槛，满X元可用 */
-	CouponStartFee string `json:"coupon_start_fee"`
+	/* 券二合一页面链接 */
+	CouponShareUrl string `json:"coupon_share_url"`
 
 	/* 优惠券开始时间 */
 	CouponStartTime string `json:"coupon_start_time"`
 
-	/* 券总量 */
+	/* 优惠券总量 */
 	CouponTotalCount int64 `json:"coupon_total_count"`
 
-	/* 宝贝描述（推荐理由,不一定有） */
-	ItemDescription string `json:"item_description"`
+	/* 是否包含定向计划 */
+	IncludeDxjh string `json:"include_dxjh"`
+
+	/* 券面额 */
+	CouponAmount string `json:"coupon_amount"`
+
+	/* 是否包含营销计划 */
+	IncludeMkt string `json:"include_mkt"`
+
+	/* 定向计划信息 */
+	InfoDxjh string `json:"info_dxjh"`
 
 	/* 宝贝id */
 	ItemId int64 `json:"item_id"`
+
+	/* 商品地址 */
+	ItemUrl string `json:"item_url"`
 
 	/* 拼团：几人团 */
 	JddNum int64 `json:"jdd_num"`
@@ -56,11 +65,11 @@ type DgMapData struct {
 	/* 一级类目名称 */
 	LevelOneCategoryName string `json:"level_one_category_name"`
 
+	/* 宝贝id */
+	NumIid int64 `json:"num_iid"`
+
 	/* 拼团：结束时间 */
 	Oetime string `json:"oetime"`
-
-	/* 拼团：一人价（原价)，单位元 */
-	OrigPrice string `json:"orig_price"`
 
 	/* 拼团：开始时间 */
 	Ostime string `json:"ostime"`
@@ -68,11 +77,17 @@ type DgMapData struct {
 	/* 商品主图 */
 	PictUrl string `json:"pict_url"`
 
-	/* 拼团：已售数量 */
-	SellNum int64 `json:"sell_num"`
+	/* 宝贝所在地 */
+	Provcity string `json:"provcity"`
+
+	/* 商品一口价格 */
+	ReservePrice string `json:"reserve_price"`
 
 	/* 卖家id */
 	SellerId int64 `json:"seller_id"`
+
+	/* 店铺dsr评分 */
+	ShopDsr int64 `json:"shop_dsr"`
 
 	/* 店铺名称 */
 	ShopTitle string `json:"shop_title"`
@@ -83,17 +98,17 @@ type DgMapData struct {
 	/* 商品小图列表 */
 	SmallImages []string `json:"small_images"`
 
-	/* 拼团：剩余库存 */
-	Stock int64 `json:"stock"`
-
 	/* 商品标题 */
 	Title string `json:"title"`
 
-	/* 天猫营销玩法 */
-	TmallPlayActivityInfo string `json:"tmall_play_activity_info"`
+	/* 月支出佣金 */
+	TkTotalCommi string `json:"tk_total_commi"`
 
-	/* 拼团：库存数量 */
-	TotalStock int64 `json:"total_stock"`
+	/* 淘客30天月推广量 */
+	TkTotalSales string `json:"tk_total_sales"`
+
+	/* 商品淘客链接 */
+	Url string `json:"url"`
 
 	/* 卖家类型，0表示集市，1表示商城 */
 	UserType int64 `json:"user_type"`
@@ -107,9 +122,6 @@ type DgMapData struct {
 	/* 商品白底图 */
 	WhiteImage string `json:"white_image"`
 
-	/* 商品关联词 */
-	WordList []*WordMapData `json:"word_list>word_map_data"`
-
-	/* 折扣价 */
+	/* 商品折扣价格 */
 	ZkFinalPrice string `json:"zk_final_price"`
 }

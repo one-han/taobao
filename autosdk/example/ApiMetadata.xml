@@ -980,7 +980,7 @@
 </props>
 </struct>
 <struct>
-<name>MapData</name>
+<name>DgSearchMapData</name>
 <desc>resultList</desc>
 <props>
 <prop>
@@ -1056,6 +1056,12 @@
 <desc>是否包含定向计划</desc>
 </prop>
 <prop>
+<name>coupon_amount</name>
+<type>Number</type>
+<level>Basic</level>
+<desc>券面额</desc>
+</prop>
+<prop>
 <name>include_mkt</name>
 <type>String</type>
 <level>Basic</level>
@@ -1066,6 +1072,12 @@
 <type>Json</type>
 <level>Basic</level>
 <desc>定向计划信息</desc>
+</prop>
+<prop>
+<name>item_id</name>
+<type>Number</type>
+<level>Basic</level>
+<desc>宝贝id</desc>
 </prop>
 <prop>
 <name>item_url</name>
@@ -3683,7 +3695,7 @@ A、B、C、D等级按严重程度从高至低排列。</desc>
 <response>
 <param>
 <name>result_list</name>
-<type>MapData</type>
+<type>DgSearchMapData</type>
 <level>Object Array</level>
 <desc>resultList</desc>
 </param>
